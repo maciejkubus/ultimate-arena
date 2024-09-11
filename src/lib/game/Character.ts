@@ -1,3 +1,4 @@
+import { browser } from "$app/environment";
 import type { CharacterStats } from "$lib/interfaces/character-stats.interface";
 import type { Stat } from "$lib/interfaces/stat.interface";
 import { Assets, Sprite } from 'pixi.js';
@@ -28,13 +29,15 @@ export class Character implements CharacterStats {
   }
 
   private async loadSprite() {
-    const texture = await Assets.load('bunny.png');
+		if (!browser) return;
+    
+    const texture = await Assets.load(this.image);
 		this.sprite = new Sprite(texture);
   }
 
   getSprite(): Sprite {
     if(!this.sprite)
-      throw Error('Sprite for ' + this.name + ' not loaded')
+      throw new Error('Sprite for ' + this.name + ' not loaded')
 
     return this.sprite;
   }

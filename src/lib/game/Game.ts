@@ -1,4 +1,6 @@
-import { Application, Assets, Sprite } from 'pixi.js';
+import { Application } from 'pixi.js';
+import { CharactersManager } from './CharactersManager';
+import { ExampleCharacters } from './data/characters.example';
 
 export class Game {
 
@@ -11,27 +13,22 @@ export class Game {
 		await app.init({ background: '#1099bb', resizeTo: element });
 		element.appendChild(app.canvas);
 
-		// load the texture we need
-		const texture = await Assets.load('bunny.png');
+    const charactersManager = new CharactersManager(
+      ExampleCharacters.heroes,
+      ExampleCharacters.enemies
+    );
 
-		// This creates a texture from a 'bunny.png' image
-		const bunny = new Sprite(texture);
+    charactersManager.addToStage(app.stage, app.renderer);
 
-		// Setup the position of the bunny
-		bunny.x = app.renderer.width / 2;
-		bunny.y = app.renderer.height / 2;
-
-		// Rotate around the center
-		bunny.anchor.x = 0.5;
-		bunny.anchor.y = 0.5;
-
-		// Add the bunny to the scene we are building
-		app.stage.addChild(bunny);
-
-		// Listen for frame updates
-		app.ticker.add(() => {
-			// each frame we spin the bunny around a bit
-			bunny.rotation += 0.01;
-		});
+		// const texture = await Assets.load('bunny.png');
+		// const bunny = new Sprite(texture);
+		// bunny.x = app.renderer.width / 2;
+		// bunny.y = app.renderer.height / 2;
+		// bunny.anchor.x = 0.5;
+		// bunny.anchor.y = 0.5;
+		// app.stage.addChild(bunny);
+		// app.ticker.add(() => {
+		// 	bunny.rotation += 0.01;
+		// });
   }
 }
